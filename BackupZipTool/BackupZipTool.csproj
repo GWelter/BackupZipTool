@@ -75,6 +75,7 @@
     <Compile Include="ViewModel\Commands\BackupCommand.cs" />
     <Compile Include="ViewModel\Commands\SelectFolderCommand.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\Services\BackupScheaduler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

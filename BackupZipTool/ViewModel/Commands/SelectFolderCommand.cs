@@ -40,7 +40,6 @@ namespace BackupZipTool.ViewModel.Commands
                 {
                     mainWindowViewModel.ToZipFolder = dialog.SelectedPath.ToString();
                 }
-                Console.WriteLine(dialog.SelectedPath);
             }
         }
     }
