@@ -36,11 +36,13 @@
 
         <Label x:Name="lastBackupLabel"
                Grid.Column="1" Grid.Row="2"
-               Content="Last Backup"
+               Content="{Binding LastBackup}"
                HorizontalAlignment="Center" VerticalAlignment="Center"
                FontSize="26.667"/>
 
-        <Button x:Name="backupButton" Grid.Row="5" Grid.Column="1" Height="25px" Width="80px" Content="Backup Now" Margin="2"
+        <Button x:Name="backupButton" Grid.Row="5" Grid.Column="1" Height="25px" Width="140px"
+                Content="Start Backup Scheaduler"
+                Margin="2"
                 Command="{Binding backupCommand}"/>
     </Grid>
 </Window>

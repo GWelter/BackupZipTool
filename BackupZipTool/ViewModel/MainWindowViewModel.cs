@@ -31,6 +31,17 @@ namespace BackupZipTool.ViewModel
             }
         }
 
+        private string _lastBackup = "";
+        public string LastBackup
+        {
+            get { return "Last Backup " + _lastBackup; }
+            set
+            {
+                _lastBackup = value;
+                RaisePropertyChanged("LastBackup");
+            }
+        }
+
         #region Commands
         public BackupCommand backupCommand { get; set; }
         public SelectFolderCommand selectFolderCommand { get; set; }

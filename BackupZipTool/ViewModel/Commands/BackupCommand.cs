@@ -8,6 +8,7 @@ namespace BackupZipTool.ViewModel.Commands
     class BackupCommand : ICommand
     {
         private MainWindowViewModel mainWindowViewModel;
+        private bool hasStarted = false;
 
         public BackupCommand(MainWindowViewModel mainWindowViewModel)
         {
@@ -28,6 +29,8 @@ namespace BackupZipTool.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
+            if (hasStarted) return false;
+
             bool canExecute = String.IsNullOrWhiteSpace(mainWindowViewModel.ToZipFolder) || String.IsNullOrWhiteSpace(mainWindowViewModel.BackupFolder);
             return !canExecute;
         }
@@ -37,6 +40,7 @@ namespace BackupZipTool.ViewModel.Commands
             //TODO CREATE SCHEADULE TASK
             BackupScheaduler backupScheaduler = BackupScheaduler.Instance;
             backupScheaduler.addAction(BackupZip);
+            hasStarted = true;
         }
 
         private void BackupZip()
@@ -44,6 +48,7 @@ namespace BackupZipTool.ViewModel.Commands
             try
             {
                 ZipFile.CreateFromDirectory(mainWindowViewModel.ToZipFolder, mainWindowViewModel.BackupFolder, CompressionLevel.Optimal, false);
+                mainWindowViewModel.LastBackup = DateTime.Now.ToString("yyyy/MM/dd");
             }
             catch (UnauthorizedAccessException ex)
             {

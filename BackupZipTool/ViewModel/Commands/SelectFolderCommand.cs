@@ -33,8 +33,8 @@ namespace BackupZipTool.ViewModel.Commands
             {
                 if (parameter.ToString().Equals("toBackupText"))
                 {
-                    string date = DateTime.Now.ToString("MM-dd-yyyy");
-                    mainWindowViewModel.BackupFolder = String.Format("{0}\\user_{1}.zip", dialog.SelectedPath.ToString(), date);
+                    string date = DateTime.Now.ToString("yyyyMMdd");
+                    mainWindowViewModel.BackupFolder = string.Format("{0}\\user_{1}.zip", dialog.SelectedPath.ToString(), date);
                 }
                 else
                 {
