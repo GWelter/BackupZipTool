@@ -1,5 +1,6 @@
 ﻿using BackupZipTool.ViewModel.Services;
 using System;
+using System.IO;
 using System.IO.Compression;
 using System.Windows.Input;
 
@@ -37,18 +38,41 @@ namespace BackupZipTool.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            //TODO CREATE SCHEADULE TASK
             BackupScheaduler backupScheaduler = BackupScheaduler.Instance;
             backupScheaduler.addAction(BackupZip);
             hasStarted = true;
+        }
+
+        private void remove8thBackup()
+        {
+            string date = DateTime.Today.AddDays(-7).ToString("yyyyMMdd");
+            string fileToBeDeleted = string.Format("{0}\\user_{1}.zip", mainWindowViewModel.BackupFolder, date);
+            Console.WriteLine(fileToBeDeleted);
+
+            try
+            {
+                File.Delete(fileToBeDeleted);
+            }
+            catch (DirectoryNotFoundException dirNotFound)
+            {
+                Console.WriteLine(dirNotFound.Message);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void BackupZip()
         {
             try
             {
-                ZipFile.CreateFromDirectory(mainWindowViewModel.ToZipFolder, mainWindowViewModel.BackupFolder, CompressionLevel.Optimal, false);
+                string date = DateTime.Now.ToString("yyyyMMdd");
+                string backupFile = string.Format("{0}\\user_{1}.zip", mainWindowViewModel.BackupFolder, date);
+
+                ZipFile.CreateFromDirectory(mainWindowViewModel.ToZipFolder, backupFile, CompressionLevel.Optimal, false);
                 mainWindowViewModel.LastBackup = DateTime.Now.ToString("yyyy/MM/dd");
+                remove8thBackup();
             }
             catch (UnauthorizedAccessException ex)
             {

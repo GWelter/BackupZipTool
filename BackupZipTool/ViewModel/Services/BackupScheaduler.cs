@@ -11,7 +11,6 @@ namespace BackupZipTool.ViewModel.Services
 
         private static Action externalAction;
         private Timer timer;
-        private double dailyTimer = 1000 * 60 * 60 * 24; //set interval of one day
 
         BackupScheaduler() {
             timer = new Timer();
@@ -46,13 +45,13 @@ namespace BackupZipTool.ViewModel.Services
         {
             timer.Stop();
             externalAction();
-            timer.Interval = dailyTimer;
+            syncHour();
             timer.Start();
         }
 
         private void syncHour()
         {
-            TimeSpan nextWork = DateTime.Today.AddDays(1) - DateTime.Now;
+            TimeSpan nextWork = DateTime.Today.AddDays(1).AddMinutes(1) - DateTime.Now;
             timer.Interval = nextWork.TotalMilliseconds;
         }
     }
