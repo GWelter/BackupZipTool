@@ -47,11 +47,13 @@ namespace BackupZipTool.ViewModel.Commands
         {
             string date = DateTime.Today.AddDays(-7).ToString("yyyyMMdd");
             string fileToBeDeleted = string.Format("{0}\\user_{1}.zip", mainWindowViewModel.BackupFolder, date);
-            Console.WriteLine(fileToBeDeleted);
 
             try
             {
-                File.Delete(fileToBeDeleted);
+                if (File.Exists(fileToBeDeleted))
+                    File.Delete(fileToBeDeleted);
+                else
+                    Console.WriteLine("Arquivo inexistente");
             }
             catch (DirectoryNotFoundException dirNotFound)
             {
@@ -71,7 +73,7 @@ namespace BackupZipTool.ViewModel.Commands
                 string backupFile = string.Format("{0}\\user_{1}.zip", mainWindowViewModel.BackupFolder, date);
 
                 ZipFile.CreateFromDirectory(mainWindowViewModel.ToZipFolder, backupFile, CompressionLevel.Optimal, false);
-                mainWindowViewModel.LastBackup = DateTime.Now.ToString("yyyy/MM/dd");
+                mainWindowViewModel.LastBackup = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
                 remove8thBackup();
             }
             catch (UnauthorizedAccessException ex)
