@@ -46,12 +46,12 @@ namespace BackupZipTool.ViewModel.Commands
         private void remove8thBackup()
         {
             string date = DateTime.Today.AddDays(-7).ToString("yyyyMMdd");
-            string fileToBeDeleted = string.Format("{0}\\user_{1}.zip", mainWindowViewModel.BackupFolder, date);
+            string fileToBeDeleted = string.Format("{0}\\user_{1}", mainWindowViewModel.BackupFolder, date);
 
             try
             {
-                if (File.Exists(fileToBeDeleted))
-                    File.Delete(fileToBeDeleted);
+                if (Directory.Exists(fileToBeDeleted))
+                    Directory.Delete(fileToBeDeleted, true);
                 else
                     Console.WriteLine("Arquivo inexistente");
             }
@@ -65,14 +65,32 @@ namespace BackupZipTool.ViewModel.Commands
             }
         }
 
+        private string createDirectory(string path)
+        {
+            string backupZipFolder = string.Format("{0}\\user_zip", path);
+
+            if (!Directory.Exists(backupZipFolder))
+            {
+                Directory.CreateDirectory(backupZipFolder);
+            }
+
+            return backupZipFolder;
+        }
+
         private void BackupZip()
         {
             try
             {
                 string date = DateTime.Now.ToString("yyyyMMdd");
-                string backupFile = string.Format("{0}\\user_{1}.zip", mainWindowViewModel.BackupFolder, date);
 
-                ZipFile.CreateFromDirectory(mainWindowViewModel.ToZipFolder, backupFile, CompressionLevel.Optimal, false);
+                string rootBackupFolder = string.Format("{0}\\user_{1}", mainWindowViewModel.BackupFolder, date);
+
+                string backupZipFolder = createDirectory(mainWindowViewModel.BackupFolder);
+                string backupZipFile = string.Format("{0}\\user_{1}.zip", backupZipFolder, date);
+
+                CopyDirectory.DirectoryCopy(mainWindowViewModel.ToZipFolder, rootBackupFolder, true);
+
+                ZipFile.CreateFromDirectory(rootBackupFolder, backupZipFile, CompressionLevel.Optimal, false);
                 mainWindowViewModel.LastBackup = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
                 remove8thBackup();
             }
