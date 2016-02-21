@@ -90,7 +90,7 @@ namespace BackupZipTool.ViewModel.Commands
 
                 CopyDirectory.DirectoryCopy(mainWindowViewModel.ToZipFolder, rootBackupFolder, true);
 
-                ZipFile.CreateFromDirectory(rootBackupFolder, backupZipFile, CompressionLevel.Optimal, false);
+                ZipFile.CreateFromDirectory(rootBackupFolder, backupZipFile, CompressionLevel.NoCompression, false);
                 mainWindowViewModel.LastBackup = DateTime.Now.ToString("yyyy/MM/dd HH:mm");
                 remove8thBackup();
             }
